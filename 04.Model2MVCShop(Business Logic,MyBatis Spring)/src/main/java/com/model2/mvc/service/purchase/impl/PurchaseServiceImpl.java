@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.purchase.PurchaseDao;
 import com.model2.mvc.service.purchase.PurchaseService;
-import com.model2.mvc.service.purchase.PurchaseDao;;
 
 
 //==> 회원관리 서비스 구현
@@ -41,7 +40,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 		return purchaseDao.getPurchase(tranNo);
 	}
 
-	public Map<String , Object > getPurchaseList(Search search) throws Exception {
+	public Map<String , Object > getPurchaseList(Search search, String userId) throws Exception {
 		List<Purchase> list= purchaseDao.getPurchaseList(search);
 		int totalCount = purchaseDao.getTotalCount(search);
 		

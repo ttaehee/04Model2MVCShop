@@ -1,8 +1,5 @@
 package com.model2.mvc.service.purchase.test;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.model2.mvc.common.Search;
-import com.model2.mvc.service.domain.Product;
-import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.purchase.PurchaseService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,21 +18,25 @@ public class PurchaseServiceTest {
 
 	//==>@RunWith,@ContextConfiguration 이용 Wiring, Test 할 instance DI
 	@Autowired
-	@Qualifier("productServiceImpl")
-	private ProductService productService;
+	@Qualifier("purchaseServiceImpl")
+	private PurchaseService purchaseService;
 
-	//@Test
-	public void testAddProduct() throws Exception {
+	@Test
+	public void testAddPurchase() throws Exception {
 		
-		Product product = new Product();
+		Purchase purchase = new Purchase();
 		
-		product.setProdName("testProductName");
-		product.setProdDetail("testProductDetail");
-		product.setManuDate("testDate");
-		product.setPrice(2000);
-		product.setFileName("testImage");
+		purchase.getPurchaseProd().setProdNo(10001);
+		purchase.getBuyer().setUserId("testUser");
+		purchase.setPaymentOption("1");
+		purchase.setReceiverName("testName");
+		purchase.setReceiverPhone("testPhone");
+		purchase.setDivyAddr("testAddr");
+		purchase.setDivyRequest("testRequest");
+		purchase.setTranCode("testCode");
+		purchase.setDivyDate("testDate");
 		
-		productService.addProduct(product);
+		purchaseService.addPurchase(purchase);
 		
 		//product= productService.getProduct("testUserId");
 
@@ -44,27 +44,22 @@ public class PurchaseServiceTest {
 		//System.out.println(user);
 		
 		//==> API 확인
-		Assert.assertEquals("testProductName", product.getProdName());
-		Assert.assertEquals("testProductDetail", product.getProdDetail());
-		Assert.assertEquals("testDate", product.getManuDate());
-		Assert.assertEquals(2000, product.getPrice());
-		Assert.assertEquals("testImage", product.getFileName());
+		Assert.assertEquals(10001, purchase.getPurchaseProd().getProdNo());
+		Assert.assertEquals("testUser", purchase.getBuyer().getUserId());
+		Assert.assertEquals("1", purchase.getPaymentOption());
+		Assert.assertEquals("testName", purchase.getReceiverName());
+		Assert.assertEquals("testPhone", purchase.getReceiverPhone());
+		Assert.assertEquals("testAddr", purchase.getDivyAddr());
+		Assert.assertEquals("testRequest",purchase.getDivyRequest());
+		Assert.assertEquals("testCode", purchase.getTranCode());
+		Assert.assertEquals("testDate", purchase.getDivyDate());
 	}
-	
+	/*
 	//@Test
     public void testGetProduct() throws Exception {
 		
 		Product product = new Product();
-		//==> 필요하다면...
-		/*
-		product.setProdNo(10009);
-		product.setProdName("testProductName");
-		product.setProdDetail("testProductDetail");
-		product.setManuDate("testDate");
-		product.setPrice(2000);
-		product.setFileName("testImage");
-		*/
-		
+
 		product = productService.getProduct(10009);
 
 		//==> console 확인
@@ -85,14 +80,6 @@ public class PurchaseServiceTest {
 		 
 		 Product product= productService.getProduct(10009);
 		Assert.assertNotNull(product);
-		
-		/*
-		Assert.assertEquals("testProductName", product.getProdName());
-		Assert.assertEquals("testProductDetail", product.getProdDetail());
-		Assert.assertEquals("testDate", product.getManuDate());
-		Assert.assertEquals(2000, product.getPrice());
-		Assert.assertEquals("testImage", product.getFileName());
-		*/
 
 		product.setProdName("updateName");
 		product.setProdDetail("updateDetail");
@@ -231,5 +218,6 @@ public class PurchaseServiceTest {
 		 	System.out.println("=======================================");
 		 	
 		 }	 
+*/
 
 }
