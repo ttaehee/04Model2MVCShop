@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-            
+                
     
-    <wb-module deploy-name="04.Model2MVCShop(Business Logic,MyBatis Spring)">
-                        
+    
+    <wb-module deploy-name="004.Model2MVCShop(Business Logic,MyBatis Spring)">
+                                
+        
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-                        
+                                
+        
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                        
+                                
+        
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resouces"/>
-                        
+                                
+        
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-                        
+        <dependent-module archiveName="spring-web-5.2.5.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/spring-web-5.2.5.RELEASE/spring-web-5.2.5.RELEASE">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                                
+        
         
         <property name="context-root" value="/"/>
-                        
+                                
         
-        <property name="java-output-path" value="/04.Model2MVCShop(Business Logic,MyBatis Spring)/build/classes"/>
-                    
+        
+        <property name="java-output-path" value="/004.Model2MVCShop(Business Logic,MyBatis Spring)/build/classes"/>
+                            
+    
     
     </wb-module>
-        
+            
+
 
 </project-modules>
