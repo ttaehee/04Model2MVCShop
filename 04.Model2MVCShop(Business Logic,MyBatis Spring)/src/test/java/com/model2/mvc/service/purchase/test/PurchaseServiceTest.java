@@ -1,5 +1,8 @@
 package com.model2.mvc.service.purchase.test;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,8 +11,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.domain.User;
+import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseService;
+import com.model2.mvc.service.user.UserService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,204 +28,148 @@ public class PurchaseServiceTest {
 	@Autowired
 	@Qualifier("purchaseServiceImpl")
 	private PurchaseService purchaseService;
+	@Autowired
+	@Qualifier("productServiceImpl")
+	private ProductService productService;
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private UserService userService;
 
-	@Test
+	//@Test
 	public void testAddPurchase() throws Exception {
 		
 		Purchase purchase = new Purchase();
+		Product product =productService.getProduct(10000);
+		User user=userService.getUser("testUser");
 		
-		purchase.getPurchaseProd().setProdNo(10001);
-		purchase.getBuyer().setUserId("testUser");
+		purchase.setPurchaseProd(product);
+		purchase.setBuyer(user);
 		purchase.setPaymentOption("1");
 		purchase.setReceiverName("testName");
 		purchase.setReceiverPhone("testPhone");
 		purchase.setDivyAddr("testAddr");
 		purchase.setDivyRequest("testRequest");
-		purchase.setTranCode("testCode");
-		purchase.setDivyDate("testDate");
+		purchase.setTranCode("2");
+		//purchase.setDivyDate("testDate");
 		
 		purchaseService.addPurchase(purchase);
 		
-		//product= productService.getProduct("testUserId");
-
 		//==> console 확인
-		//System.out.println(user);
+		System.out.println(purchase);
 		
 		//==> API 확인
-		Assert.assertEquals(10001, purchase.getPurchaseProd().getProdNo());
+		Assert.assertEquals(10000, purchase.getPurchaseProd().getProdNo());
 		Assert.assertEquals("testUser", purchase.getBuyer().getUserId());
 		Assert.assertEquals("1", purchase.getPaymentOption());
 		Assert.assertEquals("testName", purchase.getReceiverName());
 		Assert.assertEquals("testPhone", purchase.getReceiverPhone());
 		Assert.assertEquals("testAddr", purchase.getDivyAddr());
 		Assert.assertEquals("testRequest",purchase.getDivyRequest());
-		Assert.assertEquals("testCode", purchase.getTranCode());
-		Assert.assertEquals("testDate", purchase.getDivyDate());
+		Assert.assertEquals("2", purchase.getTranCode());
+		//Assert.assertEquals("testDate", purchase.getDivyDate());
 	}
-	/*
+	
 	//@Test
-    public void testGetProduct() throws Exception {
+    public void testGetPurchase() throws Exception {
 		
-		Product product = new Product();
+    	Purchase purchase = new Purchase();
 
-		product = productService.getProduct(10009);
+    	purchase = purchaseService.getPurchase(10000);
 
 		//==> console 확인
-		System.out.println(product);
+		System.out.println(purchase);
 		
 		//==> API 확인
-		Assert.assertEquals("testProductName", product.getProdName());
-		Assert.assertEquals("testProductDetail", product.getProdDetail());
-		Assert.assertEquals("testDate", product.getManuDate());
-		Assert.assertEquals(2000, product.getPrice());
-		Assert.assertEquals("testImage", product.getFileName());
+		Assert.assertEquals(10000, purchase.getPurchaseProd().getProdNo());
+		Assert.assertEquals("testUser", purchase.getBuyer().getUserId());
+		Assert.assertEquals("1", purchase.getPaymentOption());
+		Assert.assertEquals("testName", purchase.getReceiverName());
+		Assert.assertEquals("testPhone", purchase.getReceiverPhone());
+		Assert.assertEquals("testAddr", purchase.getDivyAddr());
+		Assert.assertEquals("testRequest",purchase.getDivyRequest());
+		Assert.assertEquals("2", purchase.getTranCode());
+		//Assert.assertEquals("220420", purchase.getDivyDate());
 
 		//Assert.assertNotNull(userService.getUser("user02"));
 	}
 	
 	//@Test
-	 public void testUpdateProduct() throws Exception{
+	 public void testUpdatePurchase() throws Exception{
 		 
-		 Product product= productService.getProduct(10009);
-		Assert.assertNotNull(product);
+		 Purchase purchase= purchaseService.getPurchase(10000);
+		 Product product =productService.getProduct(10000);
+		User user=userService.getUser("testUser");
 
-		product.setProdName("updateName");
-		product.setProdDetail("updateDetail");
-		product.setManuDate("upDate");
-		product.setPrice(1111);
-		product.setFileName("updateImage");
+		purchase.setPaymentOption("2");
+		purchase.setReceiverName("updateName");
+		purchase.setReceiverPhone("updatePhone");
+		purchase.setDivyAddr("updateAddr");
+		purchase.setDivyRequest("updateRequest");
+		purchase.setTranCode("2");
+		//purchase.setDivyDate("upDate");
 		
-		productService.updateProduct(product);
+		purchaseService.updatePurchase(purchase);
 		
-		product= productService.getProduct(10009);
-		Assert.assertNotNull(product);
+		purchaseService.getPurchase(10000);
 		
 		//==> console 확인
-		System.out.println(product);
+		System.out.println(purchase);
 			
 		//==> API 확인
-		Assert.assertEquals("updateName", product.getProdName());
-		Assert.assertEquals("updateDetail", product.getProdDetail());
-		Assert.assertEquals("upDate", product.getManuDate());
-		Assert.assertEquals(1111, product.getPrice());
-		Assert.assertEquals("updateImage", product.getFileName());
+		Assert.assertEquals(10000, purchase.getPurchaseProd().getProdNo());
+		Assert.assertEquals("testUser", purchase.getBuyer().getUserId());
+		Assert.assertEquals("2", purchase.getPaymentOption());
+		Assert.assertEquals("updateName", purchase.getReceiverName());
+		Assert.assertEquals("updatePhone", purchase.getReceiverPhone());
+		Assert.assertEquals("updateAddr", purchase.getDivyAddr());
+		Assert.assertEquals("updateRequest",purchase.getDivyRequest());
+		Assert.assertEquals("2", purchase.getTranCode());
+		//Assert.assertEquals("upDate", purchase.getDivyDate());
 	 }
+	 
+    //@Test
+    public void testUpdateTranCode() throws Exception{
+			 
+		Purchase purchase= purchaseService.getPurchase(10000);
 
-	 //@Test
-	 public void testGetProductListAll() throws Exception{
+		purchase.setTranCode("3");
+
+		purchaseService.updateTranCode(purchase);
+			
+		purchaseService.getPurchase(10000);
+			
+		//==> console 확인
+		System.out.println(purchase);
+				
+		//==> API 확인
+		Assert.assertEquals(10000, purchase.getPurchaseProd().getProdNo());
+		Assert.assertEquals("testUser", purchase.getBuyer().getUserId());
+		Assert.assertEquals("2", purchase.getPaymentOption());
+		Assert.assertEquals("updateName", purchase.getReceiverName());
+		Assert.assertEquals("updatePhone", purchase.getReceiverPhone());
+		Assert.assertEquals("updateAddr", purchase.getDivyAddr());
+		Assert.assertEquals("updateRequest",purchase.getDivyRequest());
+		Assert.assertEquals("3", purchase.getTranCode());
+		//Assert.assertEquals("upDate", purchase.getDivyDate());
+     }
+
+	 @Test
+	 public void testGetPurchaseList() throws Exception{
 		 
 	 	Search search = new Search();
 	 	search.setCurrentPage(1);
 	 	search.setPageSize(3);
-	 	Map<String,Object> map = productService.getProductList(search);
+	 	
+	 	Map<String,Object> map = purchaseService.getPurchaseList(search, "testUser");
 	 	
 	 	List<Object> list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(3, list.size());
+	 	Assert.assertEquals(2, list.size());
 	 	
 		//==> console 확인
 	 	System.out.println("list:"+list);
 	 	
 	 	Integer totalCount = (Integer)map.get("totalCount");
 	 	System.out.println("totalCount:"+totalCount);
-	 	
-	 	System.out.println("=======================================");
-	 	
-	 	search.setCurrentPage(1);
-	 	search.setPageSize(3);
-	 	search.setSearchCondition("0");
-	 	search.setSearchKeyword("");
-	 	map = productService.getProductList(search);
-	 	
-	 	list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(3, list.size());
-	 	
-	 	//==> console 확인
-	 	System.out.println(list);
-	 	
-	 	totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);
 	 }
-
-	 //@Test
-	 public void testGetProductListProdNo() throws Exception{
-		 
-	 	Search search = new Search();
-	 	search.setCurrentPage(1);
-	 	search.setPageSize(3);
-	 	search.setSearchCondition("0");
-	 	search.setSearchKeyword("10009");
-	 	Map<String,Object> map = productService.getProductList(search);
-	 	
-	 	List<Object> list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(1, list.size());
-	 	
-		//==> console 확인
-	 	System.out.println("list:"+list);
-	 	
-	 	Integer totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);
-	 	
-	 	System.out.println("=======================================");
-	 	
-	 	search.setSearchCondition("0");
-	 	search.setSearchKeyword(""+System.currentTimeMillis());
-	 	map = productService.getProductList(search);
-	 	
-	 	list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(0, list.size());
-	 	
-		//==> console 확인
-	 	System.out.println("list:"+list);
-	 	
-	 	totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);
-	 }
-
-	 //@Test
-	 public void testGetProductListByProdName() throws Exception{
-		 
-	 	Search search = new Search();
-	 	search.setCurrentPage(1);
-	 	search.setPageSize(3);
-	 	search.setSearchCondition("1");
-	 	search.setSearchKeyword("updateName");
-	 	Map<String,Object> map = productService.getProductList(search);
-	 	
-	 	List<Object> list = (List<Object>)map.get("list");
-	 	Assert.assertEquals(1, list.size());
-	 	
-		//==> console 확인
-	 	System.out.println(list);
-	 	
-	 	Integer totalCount = (Integer)map.get("totalCount");
-	 	System.out.println(totalCount);
-	 	
-	 	System.out.println("=======================================");
-	 	
-	 }	 
-	 
-	//@Test
-		 public void testGetProductListByPrice() throws Exception{
-			 
-		 	Search search = new Search();
-		 	search.setCurrentPage(1);
-		 	search.setPageSize(3);
-		 	search.setSearchCondition("2");
-		 	search.setSearchKeyword("2000");
-		 	Map<String,Object> map = productService.getProductList(search);
-		 	
-		 	List<Product> list = (List<Product>)map.get("list");
-		 	Assert.assertEquals(1, list.size());
-		 	
-			//==> console 확인
-		 	System.out.println("list:"+list);
-		 	
-		 	Integer totalCount = (Integer)map.get("totalCount");
-		 	System.out.println(totalCount);
-		 	
-		 	System.out.println("=======================================");
-		 	
-		 }	 
-*/
 
 }
